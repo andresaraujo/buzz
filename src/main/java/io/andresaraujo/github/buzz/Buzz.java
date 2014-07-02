@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Buzz {
-    private static Buzz _buzz = new Buzz();
+    public static final String DEFAULT_CHANNEL = "_";
+    static Buzz _buzz = new Buzz();
     private HashMap<String, HashMap<String, ArrayList<SubscriptionDef>>> subscriptions = new HashMap<String, HashMap<String, ArrayList<SubscriptionDef>>>(10);
 
     public static ChannelDef channel(String name) {
         return new ChannelDef(_buzz, name);
     }
 
-    public void sub(String channelName, String topic, BuzzListener listener) {
+    public static ChannelDef channel(){
+        return channel(DEFAULT_CHANNEL);
+    }
+
+    public SubscriptionDef sub(String channelName, String topic, BuzzListener listener) {
         SubscriptionDef subDef = new SubscriptionDef(channelName, topic, listener);
 
         HashMap<String, ArrayList<SubscriptionDef>> channel = subscriptions.get(channelName);
@@ -27,6 +32,7 @@ public class Buzz {
         }
 
         subs.add(subDef);
+        return subDef;
     }
 
     public void pub(String channel, String topic, Object data) {
@@ -39,6 +45,14 @@ public class Buzz {
                     subs.get(i).listener.on(event);
                 }
             }
+        }
+    }
+
+    public void unsubscribe(SubscriptionDef subDef) {
+        HashMap<String, ArrayList<SubscriptionDef>> channel = subscriptions.get(subDef.channelName);
+        if(channel != null){
+            ArrayList<SubscriptionDef> subs = channel.get(subDef.topic);
+            subs.remove(subDef);
         }
     }
 }

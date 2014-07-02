@@ -12,6 +12,10 @@ public class SubscriptionDef {
         this.listener = listener;
     }
 
+    public void unsubscribe(){
+        Buzz._buzz.unsubscribe(this);
+    }
+
     @Override
     public String toString() {
         return "SubscriptionDef{" +

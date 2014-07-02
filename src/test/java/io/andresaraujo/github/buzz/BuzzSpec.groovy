@@ -58,4 +58,31 @@ class BuzzSpec extends Specification {
         e = new Event("channel", "topic", "data")
         e2 = new Event("channel", "topic", [:])
     }
+
+    def "Pub/Sub to default channel"() {
+        def channel = Buzz.channel()
+        Event event = null
+
+        channel.sub("game.init", { e -> event = e })
+        channel.pub("game.init")
+
+        expect:
+        event != null
+        event.topic == "game.init"
+        event.channel == "_"
+        event.timeStamp <= System.currentTimeMillis()
+        event.getDataOr(DummyData.class, null) == null
+    }
+
+    def "Pub/Sub cancel subscription"() {
+        def channel = Buzz.channel()
+        def count = 0
+        def sub = channel.sub("game.init", { ++count })
+
+        sub.unsubscribe();
+        channel.pub("game.init")
+
+        expect:
+        count == 0
+    }
 }

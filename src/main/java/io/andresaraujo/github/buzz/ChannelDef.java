@@ -9,11 +9,15 @@ public class ChannelDef {
         this._buzz = _buzz;
     }
 
-    public void sub(String topic, BuzzListener listener) {
-        _buzz.sub(channelName, topic, listener);
+    public SubscriptionDef sub(String topic, BuzzListener listener) {
+        return _buzz.sub(channelName, topic, listener);
     }
 
-    public <T> void pub(String topic, T data) {
+    public void pub(String topic, Object data) {
         _buzz.pub(channelName, topic, data);
+    }
+
+    public void pub(String topic) {
+        _buzz.pub(channelName, topic, null);
     }
 }
