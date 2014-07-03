@@ -9,7 +9,7 @@ public class Buzz {
     private HashMap<String, HashMap<String, ArrayList<SubscriptionDef>>> subscriptions = new HashMap<String, HashMap<String, ArrayList<SubscriptionDef>>>(10);
 
     public static ChannelDef channel(String name) {
-        return new ChannelDef(_buzz, name);
+        return new ChannelDef(name);
     }
 
     public static ChannelDef channel(){
