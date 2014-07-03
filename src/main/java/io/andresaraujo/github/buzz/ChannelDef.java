@@ -18,4 +18,11 @@ public class ChannelDef {
     public void pub(String topic) {
         Buzz._buzz.pub(channelName, topic, null);
     }
+
+    public int numListeners(String topic){
+        return Buzz._buzz.numListeners(channelName, topic);
+    }
+    public int numListeners(){
+        return Buzz._buzz.numListeners(channelName);
+    }
 }

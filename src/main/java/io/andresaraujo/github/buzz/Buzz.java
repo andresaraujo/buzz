@@ -56,4 +56,29 @@ public class Buzz {
             subs.remove(subDef);
         }
     }
+
+    public int numListeners(String channelName) {
+        return numListeners(channelName, null);
+    }
+    public int numListeners(String channelName, String topic) {
+        HashMap<String, ArrayList<SubscriptionDef>> channel = subscriptions.get(channelName);
+
+        if(channel == null){
+            return 0;
+        }
+
+        if(topic != null){
+            ArrayList<SubscriptionDef> subs = channel.get(topic);
+            return subs == null ? 0 : subs.size();
+        }else{
+            int total = 0;
+            for (String s : channel.keySet()) {
+                ArrayList<SubscriptionDef> subs = channel.get(s);
+                if(subs != null){
+                    total += subs.size();
+                }
+            }
+            return total;
+        }
+    }
 }

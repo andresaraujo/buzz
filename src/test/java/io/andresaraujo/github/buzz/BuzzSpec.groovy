@@ -101,4 +101,27 @@ class BuzzSpec extends Specification {
         expect:
         count == 1
     }
+    def "Add 2 listener same topic, listener count 2" () {
+        def channel = Buzz.channel()
+
+        def sub = channel.sub("game.init", {e-> })
+        def sub2 = channel.sub("game.init", {e ->})
+
+        expect:
+        channel.numListeners("game.init") == 2
+        channel.numListeners() == 2
+    }
+
+    def "Add 2 listener different topic, listener count 2, by topic 1" () {
+        def channel = Buzz.channel()
+
+        def sub = channel.sub("game.init", {e-> })
+        def sub2 = channel.sub("game.saved", {e ->})
+
+        expect:
+        channel.numListeners("game.init") == 1
+        channel.numListeners("game.saved") == 1
+        channel.numListeners("game.empty") == 0
+        channel.numListeners() == 2
+    }
 }
