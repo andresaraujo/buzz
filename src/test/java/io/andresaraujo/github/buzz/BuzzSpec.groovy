@@ -85,4 +85,20 @@ class BuzzSpec extends Specification {
         expect:
         count == 0
     }
+
+    def "Add same Listener twice should only add it once" () {
+        def channel = Buzz.channel()
+        def count = 0
+
+        def func = {e -> ++count}
+        def sub = channel.sub("game.init", func)
+        def sub2 = channel.sub("game.init", func)
+
+        channel.pub("game.init")
+        sub.unsubscribe();
+        sub2.unsubscribe();
+
+        expect:
+        count == 1
+    }
 }

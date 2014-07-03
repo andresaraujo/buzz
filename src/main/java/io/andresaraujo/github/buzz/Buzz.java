@@ -30,8 +30,9 @@ public class Buzz {
             subs = new ArrayList<SubscriptionDef>(20);
             channel.put(topic, subs);
         }
-
-        subs.add(subDef);
+        if(subs.indexOf(subDef) == -1) {
+            subs.add(subDef);
+        }
         return subDef;
     }
 

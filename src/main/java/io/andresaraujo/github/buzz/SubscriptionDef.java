@@ -24,4 +24,26 @@ public class SubscriptionDef {
                 ", listener=" + listener +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SubscriptionDef)) return false;
+
+        SubscriptionDef that = (SubscriptionDef) o;
+
+        if (!channelName.equals(that.channelName)) return false;
+        if (!listener.equals(that.listener)) return false;
+        if (!topic.equals(that.topic)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = channelName.hashCode();
+        result = 31 * result + topic.hashCode();
+        result = 31 * result + listener.hashCode();
+        return result;
+    }
 }
